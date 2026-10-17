@@ -6,8 +6,8 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { styled } from "goober";
 
 export const DeletePlayer = () => {
-  const [settings, setSettings] = useAtom(settingsAtom);
   const [selectToDelete, setSelectedToDelete] = React.useState(undefined);
+  const [nameToDelete, setNameToDelete] = React.useState("");
   const [areYouSure, setAreYouSure] = React.useState(false);
 
   const [scores, setScores] = useAtom(scoresAtom);
@@ -42,6 +42,7 @@ export const DeletePlayer = () => {
                   );
                   setAreYouSure(false);
                   setSelectedToDelete(undefined);
+                  setNameToDelete("");
                 }}
                 color="red"
               >
@@ -50,9 +51,12 @@ export const DeletePlayer = () => {
             </Flex>
           </Flex>
         ) : (
-          <Flex gap={"3"} width={"272px"}>
+          <Flex gap={"3"} width={"272px"} style={{ marginTop: "12px" }}>
             <StyledSelect
-              onChange={(e: any) => setSelectedToDelete(e.target.value)}
+              onChange={(e: any) => {
+                setSelectedToDelete(e.target.value);
+                setNameToDelete(e.target.label);
+              }}
             >
               <option value={""} label="Select player" />
               {scores.map((item) => (
@@ -64,10 +68,7 @@ export const DeletePlayer = () => {
               ))}
             </StyledSelect>
             <Button
-              onClick={() =>
-                // setScores(scores.filter((score) => selectToDelete !== score.id))
-                setAreYouSure(true)
-              }
+              onClick={() => setAreYouSure(true)}
               disabled={!selectToDelete}
               variant={"soft"}
               color="red"
