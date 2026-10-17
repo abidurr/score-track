@@ -1,4 +1,6 @@
-# bun-react-template
+# score-track
+
+Score tracker web app with local storage
 
 To install dependencies:
 
