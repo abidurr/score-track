@@ -3,10 +3,40 @@ import { atomWithStorage } from "jotai/utils";
 
 const darkModeAtom = atomWithStorage("darkMode", false);
 
-interface IScore {
+export type COLOR_OPTIONS =
+  | "ruby"
+  | "gray"
+  | "gold"
+  | "bronze"
+  | "brown"
+  | "yellow"
+  | "amber"
+  | "orange"
+  | "tomato"
+  | "red"
+  | "crimson"
+  | "pink"
+  | "plum"
+  | "purple"
+  | "violet"
+  | "iris"
+  | "indigo"
+  | "blue"
+  | "cyan"
+  | "teal"
+  | "jade"
+  | "green"
+  | "grass"
+  | "lime"
+  | "mint"
+  | "sky"
+  | undefined;
+
+export interface IScore {
   id: string;
   user_name: string;
   score_value: number;
+  color: COLOR_OPTIONS;
 }
 
 interface ISettings {
@@ -21,4 +51,4 @@ const settingsAtom = atomWithStorage("settings", {
   step_size: 10,
 } as ISettings);
 
-export { darkModeAtom };
+export { darkModeAtom, scoresAtom, settingsAtom };
