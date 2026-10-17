@@ -5,9 +5,14 @@
  * It is included in `src/index.html`.
  */
 
+import * as React from "react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+
+import { setup } from "goober";
+
+setup(React.createElement);
 
 const elem = document.getElementById("root")!;
 const app = (
