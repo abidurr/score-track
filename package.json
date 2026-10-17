@@ -2,6 +2,7 @@
   "name": "bun-react-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://abidurr.github.io/score-track/",
   "type": "module",
   "scripts": {
     "dev": "bun --hot src/index.ts",
