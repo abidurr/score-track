@@ -2,12 +2,14 @@
   "name": "bun-react-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://abidurr.github.io/score-track/",
   "type": "module",
   "scripts": {
     "dev": "bun --hot src/index.ts",
     "build": "bun build ./src/index.html --outdir=dist --sourcemap --target=browser --minify --define:process.env.NODE_ENV='\"production\"' --env='BUN_PUBLIC_*'",
     "start": "NODE_ENV=production bun run src/index.ts",
-    "typecheck": "bun check"
+    "typecheck": "bun check",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "react": "^19",
