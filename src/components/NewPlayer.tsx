@@ -43,7 +43,7 @@ export const AddNewPlayer = () => {
   return (
     <Box>
       <Flex direction="column" gap="1">
-        <Text size={"7"}>New player</Text>
+        <Text size={"7"} weight={"bold"}>New player</Text>
         <StyledLabel>Name</StyledLabel>
         <StyledInput
           value={newName}

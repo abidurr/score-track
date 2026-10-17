@@ -2,6 +2,8 @@ import React from "react";
 import { useAtom } from "jotai";
 import { darkModeAtom, settingsAtom, scoresAtom } from "../context/atoms";
 import { Text, Button, Flex, Switch, Container } from "@radix-ui/themes";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { styled } from "goober";
 
 export const DeletePlayer = () => {
   const [settings, setSettings] = useAtom(settingsAtom);
@@ -17,14 +19,70 @@ export const DeletePlayer = () => {
 
   return (
     <Container>
-      <Flex direction={"column"} gap={"2"}>
-        <select onChange={(e) => setSelectedToDelete(e.target.value)}>
-          {scores.map((item) => (
-            <option key={item.id}>{item.id}</option>
-          ))}
-        </select>
-        {selectToDelete}
+      <Flex direction={"column"} gap={"2"} width={"272px"} height={"120px"}>
+        <Text size={"7"} weight={"bold"}>
+          Delete player
+        </Text>
+        {areYouSure ? (
+          <Flex direction={"column"} gap={"2"}>
+            <Text> Are you sure you want to delete?</Text>
+            <Flex gap={"3"} justify={"between"} style={{ margin: "10px 18px" }}>
+              <Button
+                color="green"
+                variant="soft"
+                onClick={() => setAreYouSure(false)}
+              >
+                No, go back
+              </Button>
+              <Button
+                variant="soft"
+                onClick={() => {
+                  setScores(
+                    scores.filter((score) => selectToDelete !== score.id),
+                  );
+                  setAreYouSure(false);
+                  setSelectedToDelete(undefined);
+                }}
+                color="red"
+              >
+                Yes, delete it
+              </Button>
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex gap={"3"} width={"272px"}>
+            <StyledSelect
+              onChange={(e: any) => setSelectedToDelete(e.target.value)}
+            >
+              <option value={""} label="Select player" />
+              {scores.map((item) => (
+                <option
+                  key={item.id}
+                  value={item.id}
+                  label={`${item.user_name} (${item.score_value})`}
+                />
+              ))}
+            </StyledSelect>
+            <Button
+              onClick={() =>
+                // setScores(scores.filter((score) => selectToDelete !== score.id))
+                setAreYouSure(true)
+              }
+              disabled={!selectToDelete}
+              variant={"soft"}
+              color="red"
+              style={{ margin: 0 }}
+            >
+              <TrashIcon height={"22px"} width={"22px"} />
+            </Button>
+          </Flex>
+        )}
+        {/*{selectToDelete}*/}
       </Flex>
     </Container>
   );
 };
+
+const StyledSelect = styled("select")`
+  width: 100%;
+`;

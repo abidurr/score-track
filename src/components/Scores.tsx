@@ -20,7 +20,9 @@ export const Scores: React.FC = () => {
   return (
     <Section>
       <Flex direction="column" gap="4" wrap={"wrap"}>
-        <Text size="8">Scores</Text>
+        <Text size="9" weight={"bold"}>
+          Scores
+        </Text>
         <Flex wrap="wrap" gap={"5"} align={"start"} direction={"column"}>
           {scores?.map((item) => {
             return (
@@ -45,7 +47,7 @@ export const Scores: React.FC = () => {
                       </Box>
                     </Flex>
 
-                    <IconButton
+                    {/*<IconButton
                       onClick={() => {
                         setScores(
                           scores.filter((score) => item.id !== score.id),
@@ -55,7 +57,7 @@ export const Scores: React.FC = () => {
                       variant="ghost"
                     >
                       <TrashIcon color="red" />
-                    </IconButton>
+                    </IconButton>*/}
                     <Box>
                       <Flex gap="4" direction="column">
                         <IconButton

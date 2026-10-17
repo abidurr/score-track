@@ -17,8 +17,8 @@ export const Scoreboard = () => {
           justify={"start"}
           style={{ margin: "auto" }}
         >
-          <DeletePlayer />
           <Settings />
+          <DeletePlayer />
           <AddNewPlayer />
         </Flex>
       </Section>

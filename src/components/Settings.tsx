@@ -19,15 +19,17 @@ export const Settings = () => {
 
   return (
     <>
-      <Flex gap="4" direction="column">
-        <Text size={"7"}>Settings</Text>
+      <Flex gap="4" direction="column" width={"272px"}>
+        <Text size={"7"} weight={"bold"}>
+          Settings
+        </Text>
         <Button onClick={() => setDarkMode(!darkMode)} variant="soft">
           {darkMode ? (
             <MoonIcon width="18" height="18" />
           ) : (
             <SunIcon width="18" height="18" />
           )}{" "}
-          Theme
+          Switch Theme
         </Button>
 
         <Flex gap="1" direction="column">
