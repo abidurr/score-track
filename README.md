@@ -1,6 +1,14 @@
 # score-track
 
-Score tracker web app with local storage
+Score tracker web app with local storage.
+
+Uses:
+
+- Bun react boilerplate
+- Jotai with local storage
+- CSS using
+  - Radix UI
+  - goober
 
 To install dependencies:
 
