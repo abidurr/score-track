@@ -26,7 +26,7 @@ export const Scores: React.FC = () => {
         <Flex wrap="wrap" gap={"5"} align={"start"} direction={"column"}>
           {scores?.map((item) => {
             return (
-              <Box width="260px">
+              <Box key={`player-${item.id}`} width="260px">
                 <Card size="1">
                   <Flex gap="3" align="center" justify="between">
                     <Flex gap="3" align="center">
