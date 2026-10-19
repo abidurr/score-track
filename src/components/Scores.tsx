@@ -105,6 +105,7 @@ export const Scores: React.FC = () => {
             })
           ) : (
             <Button
+              variant="soft"
               onClick={() =>
                 setScores([
                   {
