@@ -3,34 +3,9 @@ import { useAtom, useAtomValue } from "jotai";
 import { COLORS_LIST, randomColor } from "../context/utils";
 import { StyledInput, StyledLabel } from "./elements";
 import { nanoid } from "nanoid";
-import {
-  darkModeAtom,
-  scoresAtom,
-  settingsAtom,
-  type COLOR_OPTIONS,
-  type IScore,
-} from "@/context/atoms";
-import {
-  Section,
-  Text,
-  Avatar,
-  Card,
-  Flex,
-  Box,
-  Button,
-  IconButton,
-  Grid,
-  Tooltip,
-  Container,
-} from "@radix-ui/themes";
-import {
-  BoxIcon,
-  CheckIcon,
-  MinusCircledIcon,
-  PlusCircledIcon,
-  PlusIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { scoresAtom, settingsAtom, type COLOR_OPTIONS } from "@/context/atoms";
+import { Text, Flex, Box, Button, IconButton, Tooltip } from "@radix-ui/themes";
+import { CheckIcon, PlusIcon } from "@radix-ui/react-icons";
 
 export const AddNewPlayer = () => {
   const settings = useAtomValue(settingsAtom);
@@ -43,7 +18,9 @@ export const AddNewPlayer = () => {
   return (
     <Box>
       <Flex direction="column" gap="1">
-        <Text size={"7"} weight={"bold"}>New player</Text>
+        <Text size={"7"} weight={"bold"}>
+          New player
+        </Text>
         <StyledLabel>Name</StyledLabel>
         <StyledInput
           value={newName}
@@ -61,9 +38,7 @@ export const AddNewPlayer = () => {
             setStartingScore(value_now);
           }}
         />
-
         <StyledLabel>Color</StyledLabel>
-
         <Flex gap="2" wrap="wrap" justify="start">
           {COLORS_LIST.map((item) => (
             <>
@@ -77,9 +52,7 @@ export const AddNewPlayer = () => {
             </>
           ))}
         </Flex>
-
         <Button
-          // type="submit"
           variant="soft"
           style={{ marginTop: "24px" }}
           onClick={() => {
