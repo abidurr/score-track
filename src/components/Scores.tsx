@@ -2,13 +2,7 @@ import React from "react";
 import { useAtom, useAtomValue } from "jotai";
 import { scoresAtom, settingsAtom } from "@/context/atoms";
 import { Section, Text, Avatar, Card, Flex, Box } from "@radix-ui/themes";
-import {
-  MinusCircledIcon,
-  PlusCircledIcon,
-  ThickArrowDownIcon,
-  ThickArrowUpIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 
 export const Scores: React.FC = () => {
@@ -46,24 +40,11 @@ export const Scores: React.FC = () => {
                         </Text>
                       </Box>
                     </Flex>
-
-                    {/*<IconButton
-                      onClick={() => {
-                        setScores(
-                          scores.filter((score) => item.id !== score.id),
-                        );
-                      }}
-                      size="2"
-                      variant="ghost"
-                    >
-                      <TrashIcon color="red" />
-                    </IconButton>*/}
                     <Box>
                       <Flex gap="4" direction="column">
                         <IconButton
                           variant="ghost"
                           size="2"
-
                           onClick={() => {
                             setScores(
                               scores?.length
