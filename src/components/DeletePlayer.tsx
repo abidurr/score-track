@@ -1,7 +1,7 @@
 import React from "react";
 import { useAtom } from "jotai";
-import { darkModeAtom, settingsAtom, scoresAtom } from "../context/atoms";
-import { Text, Button, Flex, Switch, Container } from "@radix-ui/themes";
+import { scoresAtom } from "../context/atoms";
+import { Text, Button, Flex, Container } from "@radix-ui/themes";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { styled } from "goober";
 
@@ -12,11 +12,6 @@ export const DeletePlayer = () => {
 
   const [scores, setScores] = useAtom(scoresAtom);
 
-  const options_to_delete = scores.map((score) => ({
-    label: score.user_name,
-    value: score.id,
-  }));
-
   return (
     <Container>
       <Flex direction={"column"} gap={"2"} width={"272px"} height={"120px"}>
@@ -25,7 +20,7 @@ export const DeletePlayer = () => {
         </Text>
         {areYouSure ? (
           <Flex direction={"column"} gap={"2"}>
-            <Text> Are you sure you want to delete?</Text>
+            <Text>Delete {nameToDelete}?</Text>
             <Flex gap={"3"} justify={"between"} style={{ margin: "10px 18px" }}>
               <Button
                 color="green"
