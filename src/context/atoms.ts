@@ -1,4 +1,3 @@
-import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 const darkModeAtom = atomWithStorage("darkMode", false);
