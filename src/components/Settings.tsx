@@ -1,9 +1,8 @@
-import React from "react";
+import * as React from "react";
 import { useAtom } from "jotai";
 import { darkModeAtom, settingsAtom } from "@/context/atoms";
 import { Text, Button, Flex, Switch } from "@radix-ui/themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Container } from "@radix-ui/themes";
 import { StyledInput, StyledLabel } from "./elements";
 
 export const Settings = () => {
