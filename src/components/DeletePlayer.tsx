@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { scoresAtom } from "../context/atoms";
 import { Text, Button, Flex, Container } from "@radix-ui/themes";
@@ -6,11 +6,14 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { styled } from "goober";
 
 export const DeletePlayer = () => {
-  const [selectToDelete, setSelectedToDelete] = React.useState(undefined);
-  const [nameToDelete, setNameToDelete] = React.useState("");
-  const [areYouSure, setAreYouSure] = React.useState(false);
-
+  const [selectToDelete, setSelectedToDelete] = useState(undefined);
+  const [areYouSure, setAreYouSure] = useState(false);
   const [scores, setScores] = useAtom(scoresAtom);
+
+  const findUserFromId = (id?: string) => {
+    const userToDelete = scores?.filter((item) => item?.id === id);
+    return userToDelete[0]?.user_name ?? "this player";
+  };
 
   return (
     <Container>
@@ -20,7 +23,7 @@ export const DeletePlayer = () => {
         </Text>
         {areYouSure ? (
           <Flex direction={"column"} gap={"2"}>
-            <Text>Delete {nameToDelete}?</Text>
+            <Text>Delete {findUserFromId(selectToDelete)} ?</Text>
             <Flex gap={"3"} justify={"between"} style={{ margin: "10px 18px" }}>
               <Button
                 color="green"
@@ -37,7 +40,6 @@ export const DeletePlayer = () => {
                   );
                   setAreYouSure(false);
                   setSelectedToDelete(undefined);
-                  setNameToDelete("");
                 }}
                 color="red"
               >
@@ -50,7 +52,6 @@ export const DeletePlayer = () => {
             <StyledSelect
               onChange={(e: any) => {
                 setSelectedToDelete(e.target.value);
-                setNameToDelete(e.target.label);
               }}
             >
               <option value={""} label="Select player" />
@@ -73,7 +74,6 @@ export const DeletePlayer = () => {
             </Button>
           </Flex>
         )}
-        {/*{selectToDelete}*/}
       </Flex>
     </Container>
   );
