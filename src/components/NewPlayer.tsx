@@ -17,7 +17,7 @@ export const AddNewPlayer = () => {
   );
   return (
     <Box>
-      <Flex direction="column" gap="1">
+      <Flex direction="column" gap="1" style={{ paddingTop: "68px" }}>
         <Text size={"7"} weight={"bold"}>
           New player
         </Text>
