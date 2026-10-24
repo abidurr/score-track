@@ -22,16 +22,18 @@ export const Settings = () => {
         <Text size={"7"} weight={"bold"}>
           Settings
         </Text>
-        <Button onClick={() => setDarkMode(!darkMode)} variant="soft">
-          {darkMode ? (
-            <MoonIcon width="18" height="18" />
-          ) : (
-            <SunIcon width="18" height="18" />
-          )}{" "}
-          Switch Theme
-        </Button>
 
-        <Flex gap="1" direction="column">
+        <Flex gap={"4"} align={"center"}>
+          <Switch
+            id="is-integer"
+            variant="surface"
+            checked={settings?.is_integer}
+            onCheckedChange={() => toggleIsIntegerState()}
+          />
+          <Text color="gray">Whole numbers only</Text>
+        </Flex>
+
+        <Flex gap="1" direction="column" style={{ marginBottom: "20px" }}>
           <StyledLabel style={{ margin: "0px" }}>Smallest step</StyledLabel>
           <StyledInput
             type="number"
@@ -47,15 +49,15 @@ export const Settings = () => {
             }
           />
         </Flex>
-        <Flex gap={"4"} align={"center"}>
-          <Switch
-            id="is-integer"
-            variant="surface"
-            checked={settings?.is_integer}
-            onCheckedChange={() => toggleIsIntegerState()}
-          />
-          <Text color="gray">Whole numbers only</Text>
-        </Flex>
+
+        <Button onClick={() => setDarkMode(!darkMode)} variant="soft">
+          {darkMode ? (
+            <MoonIcon width="18" height="18" />
+          ) : (
+            <SunIcon width="18" height="18" />
+          )}{" "}
+          Switch Theme
+        </Button>
       </Flex>
     </>
   );
