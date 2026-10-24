@@ -30,7 +30,7 @@ export const Settings = () => {
             checked={settings?.is_integer}
             onCheckedChange={() => toggleIsIntegerState()}
           />
-          <Text color="gray">Whole numbers only</Text>
+          <Text color="gray">Ignore decimals</Text>
         </Flex>
 
         <Flex gap="1" direction="column" style={{ marginBottom: "20px" }}>
