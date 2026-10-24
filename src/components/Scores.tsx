@@ -30,8 +30,11 @@ export const Scores: React.FC = () => {
           {scores?.length ? (
             scores?.map((item) => {
               return (
-                <Box key={`player-${item.id}`} width="260px">
-                  <Card size="1">
+                <Box key={`player-${item.id}`} width="300px">
+                  <Card
+                    size="1"
+                    style={{ minWidth: "300px", width: "fit-content" }}
+                  >
                     <Flex gap="3" align="center" justify="between">
                       <Flex gap="3" align="center">
                         <Avatar
@@ -45,9 +48,18 @@ export const Scores: React.FC = () => {
                           <Text as="div" size="2" weight="bold" color="gray">
                             {item?.user_name ?? "J. Doe"}
                           </Text>
-                          <Text as="div" size="8" weight="bold">
-                            {item?.score_value ?? 0}
-                          </Text>
+                          <div>
+                            <Text
+                              as="div"
+                              size="8"
+                              weight="bold"
+                              style={{ whiteSpace: "pre-line" }}
+                            >
+                              {new Intl.NumberFormat().format(
+                                item?.score_value ?? 0,
+                              )}
+                            </Text>
+                          </div>
                         </Box>
                       </Flex>
                       <Box>
