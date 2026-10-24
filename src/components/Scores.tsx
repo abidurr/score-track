@@ -21,7 +21,7 @@ export const Scores: React.FC = () => {
   const step_size = settings?.step_size;
 
   return (
-    <Section>
+    <Section style={{ width: "fit-content", margin: "auto" }}>
       <Flex direction="column" gap="4" wrap={"wrap"}>
         <Text size="9" weight={"bold"}>
           Scores

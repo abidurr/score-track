@@ -18,9 +18,21 @@ const HrStyled = styled("div")`
   height: 2px;
 `;
 
+const ResponsiveGrid = styled("div")`
+  display: grid;
+  gap: 6px;
+  justify: start;
+  grid-template-columns: 1fr 1fr;
+  @media only screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: auto;
+  }
+`;
+
 export const Scoreboard = () => {
   return (
-    <Grid columns={"2"} gap={"6"} justify={"start"}>
+    <ResponsiveGrid>
       <Section>
         <Flex
           direction={"column"}
@@ -37,7 +49,9 @@ export const Scoreboard = () => {
           <Settings />
         </Flex>
       </Section>
-      <Scores />
-    </Grid>
+      <Section>
+        <Scores />
+      </Section>
+    </ResponsiveGrid>
   );
 };
