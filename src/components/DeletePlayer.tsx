@@ -54,7 +54,7 @@ export const DeletePlayer = () => {
                 setSelectedToDelete(e.target.value);
               }}
             >
-              <option value={""} label="Select player" />
+              <option value={""} label="Select player to delete" />
               {scores.map((item) => (
                 <option
                   key={item.id}
