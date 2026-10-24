@@ -23,7 +23,7 @@ export const Scores: React.FC = () => {
   return (
     <Section style={{ width: "fit-content", margin: "auto" }}>
       <Flex direction="column" gap="4" wrap={"wrap"}>
-        <Text size="8" weight={"bold"} style={{ marginBottom: "16px" }}>
+        <Text size="8" weight={"bold"} style={{ marginBottom: "12px" }}>
           Scores
         </Text>
         <Flex wrap="wrap" gap={"5"} align={"start"} direction={"column"}>
