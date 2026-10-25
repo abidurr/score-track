@@ -4,3 +4,5 @@ export * from "./Scores";
 export * from "./Settings";
 export * from "./elements";
 export * from "./DeletePlayer";
+export * from "./Dice";
+export * from "./EditPlayerName";
