@@ -2,6 +2,8 @@ import { Grid, Section } from "@radix-ui/themes";
 import { Settings, Scores, AddNewPlayer, DeletePlayer } from "../components/";
 import { Flex } from "@radix-ui/themes";
 import { styled } from "goober";
+import { EditPlayerName } from "./EditPlayerName";
+import { RandomDice } from "./Dice";
 
 const HrStyled = styled("div")`
   min-width: 100%;
@@ -45,6 +47,10 @@ export const Scoreboard = () => {
           <AddNewPlayer />
           <HrStyled />
           <DeletePlayer />
+          <HrStyled />
+          <EditPlayerName />
+          <HrStyled />
+          <RandomDice />
           <HrStyled />
           <Settings />
         </Flex>
