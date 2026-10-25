@@ -18,6 +18,7 @@ export const RandomDice = () => {
         </Text>
         <Button
           variant="soft"
+          disabled={rollScore === ""}
           onClick={() => {
             setRollScore("");
           }}
