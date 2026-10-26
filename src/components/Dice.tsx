@@ -14,7 +14,8 @@ export const RandomDice = () => {
     <Container>
       <Flex direction={"column"} gap={"2"} width={"272px"}>
         <Text size={"7"} weight={"bold"}>
-          Roll{!!rollScore && `: ${rollScore}`}
+          Roll{!!rollScore && `: `}
+          <span style={{ opacity: 0.8 }}>{!!rollScore && `${rollScore}`}</span>
         </Text>
         <Button
           variant="soft"
