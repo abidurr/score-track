@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
-import { scoresAtom, settingsAtom } from "@/context/atoms";
+import { scoresAtom, settingsAtom, type IScore } from "@/context/atoms";
 import {
   Section,
   Text,
@@ -13,7 +13,12 @@ import {
 import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 import { nanoid } from "nanoid";
-import { AnimatePresence, motion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  Reorder,
+  useDragControls,
+} from "motion/react";
 import { styled } from "goober";
 import { AnimatedNumber } from "./AnimatedNumber";
 
@@ -175,6 +180,138 @@ const EditableScore: React.FC<EditableScoreProps> = ({
   );
 };
 
+interface SortableScoreRowProps {
+  item: IScore;
+  stepSize: number;
+  integerOnly: boolean;
+  onScoreChange: (playerId: string, value: number) => void;
+  onStep: (playerId: string, amount: number) => void;
+}
+
+const SortableScoreRow: React.FC<SortableScoreRowProps> = ({
+  item,
+  stepSize,
+  integerOnly,
+  onScoreChange,
+  onStep,
+}) => {
+  const dragControls = useDragControls();
+
+  return (
+    <Reorder.Item
+      as="div"
+      value={item}
+      dragListener={false}
+      dragControls={dragControls}
+      layout
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{
+        opacity: 0,
+        height: 0,
+        marginBottom: 0,
+        overflow: "hidden",
+      }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
+      onPointerDownCapture={(event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const isAvatar = target.closest("[data-score-drag-handle]");
+        const isInteractive = target.closest(
+          "[data-score-no-drag], button, input, [role='button']",
+        );
+
+        if (
+          isAvatar ||
+          (!isInteractive && target.closest("[data-score-card]"))
+        ) {
+          dragControls.start(event);
+        }
+      }}
+      style={{ width: 300, listStyle: "none" }}
+    >
+      <Card
+        size="1"
+        data-score-card
+        style={{
+          minWidth: "300px",
+          width: "fit-content",
+        }}
+      >
+        <Flex gap="3" align="center" justify="between">
+          <Flex gap="3" align="center">
+            <span
+              data-score-drag-handle
+              style={{
+                display: "inline-flex",
+                cursor: "grab",
+                touchAction: "none",
+              }}
+            >
+              <Avatar
+                size="3"
+                radius="full"
+                fallback={item.user_name.substring(0, 1)}
+                color={item.color}
+                style={{ backgroundColor: item.color }}
+              />
+            </span>
+            <Box>
+              <Text
+                as="div"
+                size="2"
+                weight="bold"
+                color="gray"
+                data-score-no-drag
+                style={{ cursor: "default" }}
+              >
+                {item.user_name ?? "J. Doe"}
+              </Text>
+              <Text
+                as="div"
+                size="8"
+                weight="bold"
+                style={{ whiteSpace: "nowrap", cursor: "text" }}
+                data-score-no-drag
+              >
+                <EditableScore
+                  value={item.score_value ?? 0}
+                  stepSize={stepSize}
+                  integerOnly={integerOnly}
+                  onSave={(value) => onScoreChange(item.id, value)}
+                />
+              </Text>
+            </Box>
+          </Flex>
+          <Flex gap="2" direction="column">
+            <IconButton
+              type="button"
+              variant="ghost"
+              size="2"
+              aria-label={`Increase ${item.user_name}'s score`}
+              style={{ cursor: "pointer" }}
+              onClick={() => onStep(item.id, stepSize)}
+            >
+              <ThickArrowUpIcon />
+            </IconButton>
+            <IconButton
+              type="button"
+              variant="ghost"
+              size="2"
+              aria-label={`Decrease ${item.user_name}'s score`}
+              style={{ cursor: "pointer" }}
+              onClick={() => onStep(item.id, -stepSize)}
+            >
+              <ThickArrowDownIcon />
+            </IconButton>
+          </Flex>
+        </Flex>
+      </Card>
+    </Reorder.Item>
+  );
+};
+
 export const Scores: React.FC = () => {
   const [scores, setScores] = useAtom(scoresAtom);
   const settings = useAtomValue(settingsAtom);
@@ -187,6 +324,15 @@ export const Scores: React.FC = () => {
       ),
     );
   };
+  const updateScoreByStep = (playerId: string, amount: number) => {
+    setScores((currentScores) =>
+      currentScores.map((score) =>
+        score.id === playerId
+          ? { ...score, score_value: score.score_value + amount }
+          : score,
+      ),
+    );
+  };
 
   return (
     <Section style={{ width: "fit-content", margin: "auto" }}>
@@ -195,110 +341,35 @@ export const Scores: React.FC = () => {
           Scores
         </Text>
         <Flex wrap="wrap" gap={"5"} align={"start"} direction={"column"}>
-          <AnimatePresence initial={false}>
-            {scores?.length ? (
-              scores?.map((item) => {
-                return (
-                  <motion.div
+          {scores.length ? (
+            <Reorder.Group
+              as="div"
+              axis="y"
+              values={scores}
+              onReorder={setScores}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: 20,
+                width: "100%",
+              }}
+            >
+              <AnimatePresence initial={false}>
+                {scores.map((item) => (
+                  <SortableScoreRow
                     key={`player-${item.id}`}
-                    layout
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{
-                      opacity: 0,
-                      height: 0,
-                      marginBottom: 0,
-                      overflow: "hidden",
-                    }}
-                    transition={{ duration: 0.22, ease: "easeOut" }}
-                    style={{ width: 300 }}
-                  >
-                    <Card
-                      size="1"
-                      style={{ minWidth: "300px", width: "fit-content" }}
-                    >
-                      <Flex gap="3" align="center" justify="between">
-                        <Flex gap="3" align="center">
-                          <Avatar
-                            size="3"
-                            radius="full"
-                            fallback={item?.user_name.substring(0, 1)}
-                            color={item?.color}
-                            style={{ backgroundColor: item?.color }}
-                          />
-                          <Box>
-                            <Text as="div" size="2" weight="bold" color="gray">
-                              {item?.user_name ?? "J. Doe"}
-                            </Text>
-                            <Text
-                              as="div"
-                              size="8"
-                              weight="bold"
-                              style={{ whiteSpace: "nowrap" }}
-                            >
-                              <EditableScore
-                                value={item?.score_value ?? 0}
-                                stepSize={step_size}
-                                integerOnly={settings.is_integer}
-                                onSave={(value) => updateScore(item.id, value)}
-                              />
-                            </Text>
-                          </Box>
-                        </Flex>
-                        <Box>
-                          <Flex gap="4" direction="column">
-                            <IconButton
-                              variant="ghost"
-                              size="2"
-                              onClick={() => {
-                                setScores(
-                                  scores?.length
-                                    ? scores.map((score) =>
-                                        item.id === score.id
-                                          ? {
-                                              ...score,
-                                              score_value:
-                                                step_size +
-                                                (score.score_value ?? 0),
-                                            }
-                                          : score,
-                                      )
-                                    : [],
-                                );
-                              }}
-                            >
-                              <ThickArrowUpIcon />
-                            </IconButton>
-                            <IconButton
-                              onClick={() => {
-                                setScores(
-                                  scores?.length
-                                    ? scores.map((score) =>
-                                        item.id === score.id
-                                          ? {
-                                              ...score,
-                                              score_value:
-                                                (score.score_value ?? 0) -
-                                                step_size,
-                                            }
-                                          : score,
-                                      )
-                                    : [],
-                                );
-                              }}
-                              size="2"
-                              variant="ghost"
-                            >
-                              <ThickArrowDownIcon />
-                            </IconButton>
-                          </Flex>
-                        </Box>
-                      </Flex>
-                    </Card>
-                  </motion.div>
-                );
-              })
-            ) : (
+                    item={item}
+                    stepSize={step_size}
+                    integerOnly={settings.is_integer}
+                    onScoreChange={updateScore}
+                    onStep={updateScoreByStep}
+                  />
+                ))}
+              </AnimatePresence>
+            </Reorder.Group>
+          ) : (
+            <AnimatePresence initial={false}>
               <motion.div
                 key="empty-scoreboard"
                 initial={{ opacity: 0 }}
@@ -321,8 +392,8 @@ export const Scores: React.FC = () => {
                   Add Player 1
                 </Button>
               </motion.div>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          )}
         </Flex>
       </Flex>
     </Section>
