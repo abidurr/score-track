@@ -102,17 +102,30 @@ export const AnimatedNumber: React.FC<{ value: number }> = ({ value }) => {
         fontVariantNumeric: "tabular-nums",
       }}
     >
-      {getTokens(value).map((token) =>
-        token.digit === undefined ? (
-          <span key={token.key}>{token.text}</span>
-        ) : (
-          <NumberDigit
+      <AnimatePresence initial={false} mode="popLayout" custom={direction}>
+        {getTokens(value).map((token) => (
+          <motion.span
             key={token.key}
-            digit={token.digit}
-            direction={direction}
-          />
-        ),
-      )}
+            custom={direction}
+            initial={{ y: direction > 0 ? "110%" : "-110%", opacity: 0 }}
+            animate={{ y: "0%", opacity: 1 }}
+            exit={{ y: direction > 0 ? "-110%" : "110%", opacity: 0 }}
+            transition={{ duration: 0.32, ease: "easeInOut" }}
+            style={{
+              display: "inline-flex",
+              overflow: "hidden",
+              verticalAlign: "baseline",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {token.digit === undefined ? (
+              token.text
+            ) : (
+              <NumberDigit digit={token.digit} direction={direction} />
+            )}
+          </motion.span>
+        ))}
+      </AnimatePresence>
     </span>
   );
 };
