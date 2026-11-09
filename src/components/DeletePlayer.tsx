@@ -19,7 +19,7 @@ export const DeletePlayer = () => {
   return (
     <Container>
       <Flex direction={"column"} gap={"2"} width={"272px"} height={"120px"}>
-        <Text size={"7"} weight={"bold"}>
+        <Text size={"7"} weight={"bold"} style={{ marginBottom: "8px" }}>
           Delete player
         </Text>
         <AnimatePresence initial={false} mode="wait">
