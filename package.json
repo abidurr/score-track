@@ -16,6 +16,7 @@
     "@radix-ui/themes": "^3.3.0",
     "goober": "^2.1.19",
     "jotai": "^3.0.1",
+    "motion": "^14.11.1",
     "nanoid": "^6.0.2",
     "radix-ui": "^1.8.1",
     "react": "^19",
