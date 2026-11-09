@@ -4,6 +4,7 @@ import { scoresAtom } from "../context/atoms";
 import { Text, Button, Flex, Container } from "@radix-ui/themes";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { styled } from "goober";
+import { AnimatePresence, motion } from "motion/react";
 
 export const DeletePlayer = () => {
   const [selectToDelete, setSelectedToDelete] = useState(undefined);
@@ -21,59 +22,81 @@ export const DeletePlayer = () => {
         <Text size={"7"} weight={"bold"}>
           Delete player
         </Text>
-        {areYouSure ? (
-          <Flex direction={"column"} gap={"2"}>
-            <Text>Delete {findUserFromId(selectToDelete)} ?</Text>
-            <Flex gap={"3"} justify={"between"} style={{ margin: "10px 18px" }}>
-              <Button
-                color="green"
-                variant="soft"
-                onClick={() => setAreYouSure(false)}
-              >
-                No, go back
-              </Button>
-              <Button
-                variant="soft"
-                onClick={() => {
-                  setScores(
-                    scores.filter((score) => selectToDelete !== score.id),
-                  );
-                  setAreYouSure(false);
-                  setSelectedToDelete(undefined);
-                }}
-                color="red"
-              >
-                Yes, delete it
-              </Button>
-            </Flex>
-          </Flex>
-        ) : (
-          <Flex gap={"3"} width={"272px"} style={{ marginTop: "12px" }}>
-            <StyledSelect
-              onChange={(e: any) => {
-                setSelectedToDelete(e.target.value);
-              }}
+        <AnimatePresence initial={false} mode="wait">
+          {areYouSure ? (
+            <motion.div
+              key="delete-confirmation"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <option value={""} label="Select player to delete" />
-              {scores.map((item) => (
-                <option
-                  key={item.id}
-                  value={item.id}
-                  label={`${item.user_name} (${item.score_value})`}
-                />
-              ))}
-            </StyledSelect>
-            <Button
-              onClick={() => setAreYouSure(true)}
-              disabled={!selectToDelete}
-              variant={"soft"}
-              color="red"
-              style={{ margin: 0 }}
+              <Flex direction={"column"} gap={"2"}>
+                <Text>Delete {findUserFromId(selectToDelete)} ?</Text>
+                <Flex
+                  gap={"3"}
+                  justify={"between"}
+                  style={{ margin: "10px 18px" }}
+                >
+                  <Button
+                    color="green"
+                    variant="soft"
+                    onClick={() => setAreYouSure(false)}
+                  >
+                    No, go back
+                  </Button>
+                  <Button
+                    variant="soft"
+                    onClick={() => {
+                      setScores(
+                        scores.filter((score) => selectToDelete !== score.id),
+                      );
+                      setAreYouSure(false);
+                      setSelectedToDelete(undefined);
+                    }}
+                    color="red"
+                  >
+                    Yes, delete it
+                  </Button>
+                </Flex>
+              </Flex>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="delete-selection"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <TrashIcon height={"22px"} width={"22px"} />
-            </Button>
-          </Flex>
-        )}
+              <Flex gap={"3"} width={"272px"} style={{ marginTop: "12px" }}>
+                <StyledSelect
+                  onChange={(e: any) => {
+                    setSelectedToDelete(e.target.value);
+                  }}
+                >
+                  <option value={""} label="Select player to delete" />
+                  {scores.map((item) => (
+                    <option
+                      key={item.id}
+                      value={item.id}
+                      label={`${item.user_name} (${item.score_value})`}
+                    />
+                  ))}
+                </StyledSelect>
+                <Button
+                  onClick={() => setAreYouSure(true)}
+                  disabled={!selectToDelete}
+                  variant={"soft"}
+                  color="red"
+                  style={{ margin: 0 }}
+                >
+                  <TrashIcon height={"22px"} width={"22px"} />
+                </Button>
+              </Flex>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Flex>
     </Container>
   );
