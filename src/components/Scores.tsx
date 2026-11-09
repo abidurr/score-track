@@ -10,7 +10,7 @@ import {
   Box,
   Button,
 } from "@radix-ui/themes";
-import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
+import { DoubleArrowUpIcon, DoubleArrowDownIcon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 import { nanoid } from "nanoid";
 import {
@@ -264,7 +264,7 @@ const SortableScoreRow: React.FC<SortableScoreRowProps> = ({
                 weight="bold"
                 color="gray"
                 data-score-no-drag
-                style={{ cursor: "default" }}
+                style={{ cursor: "default", marginBottom: "6px" }}
               >
                 {item.user_name ?? "J. Doe"}
               </Text>
@@ -284,7 +284,7 @@ const SortableScoreRow: React.FC<SortableScoreRowProps> = ({
               </Text>
             </Box>
           </Flex>
-          <Flex gap="2" direction="column">
+          <Flex gap="4" direction="column">
             <IconButton
               type="button"
               variant="ghost"
@@ -293,7 +293,7 @@ const SortableScoreRow: React.FC<SortableScoreRowProps> = ({
               style={{ cursor: "pointer" }}
               onClick={() => onStep(item.id, stepSize)}
             >
-              <ThickArrowUpIcon />
+              <DoubleArrowUpIcon />
             </IconButton>
             <IconButton
               type="button"
@@ -303,7 +303,7 @@ const SortableScoreRow: React.FC<SortableScoreRowProps> = ({
               style={{ cursor: "pointer" }}
               onClick={() => onStep(item.id, -stepSize)}
             >
-              <ThickArrowDownIcon />
+              <DoubleArrowDownIcon />
             </IconButton>
           </Flex>
         </Flex>
