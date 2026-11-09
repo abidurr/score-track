@@ -6,9 +6,9 @@ Uses:
 
 - Bun react boilerplate
 - Jotai with local storage
-- CSS using
-  - Radix UI
-  - goober
+- Animation with framer motion
+- Radix UI components
+- goober for custom styles
 
 To install dependencies:
 
