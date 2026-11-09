@@ -43,7 +43,9 @@ interface ISettings {
   step_size: number;
 }
 
-const scoresAtom = atomWithStorage("scores", [] as IScore[]);
+const scoresAtom = atomWithStorage("scores", [] as IScore[], undefined, {
+  getOnInit: true,
+});
 
 const settingsAtom = atomWithStorage("settings", {
   is_integer: true,
