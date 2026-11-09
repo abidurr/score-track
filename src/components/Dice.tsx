@@ -1,28 +1,56 @@
 import React, { useState } from "react";
-import { useAtom } from "jotai";
-import { scoresAtom } from "../context/atoms";
 import { Text, Button, Flex, Container } from "@radix-ui/themes";
-import { TrashIcon } from "@radix-ui/react-icons";
-import { styled } from "goober";
+import { AnimatePresence, motion } from "motion/react";
+import { AnimatedNumber } from "./AnimatedNumber";
 
 export const RandomDice = () => {
   const [rollScore, setRollScore] = useState("");
+  const [rollSequence, setRollSequence] = useState(0);
 
-  const getD2value = () => {};
+  const showRoll = (value: string) => {
+    setRollScore(value);
+    setRollSequence((sequence) => sequence + 1);
+  };
 
   return (
     <Container>
       <Flex direction={"column"} gap={"2"} width={"272px"}>
-        <Text size={"7"} weight={"bold"}>
+        <Text
+          size={"7"}
+          weight={"bold"}
+          style={{ whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}
+        >
           Roll{!!rollScore && `: `}
-          <span style={{ opacity: 0.8 }}>{!!rollScore && `${rollScore}`}</span>
+          <span
+            style={{
+              opacity: 0.8,
+              display: "inline-flex",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <AnimatePresence initial={false} mode="wait">
+              {rollScore && (
+                <motion.span
+                  key={rollSequence}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  {/^[0-9]+$/.test(rollScore) ? (
+                    <AnimatedNumber value={Number(rollScore)} />
+                  ) : (
+                    rollScore
+                  )}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </span>
         </Text>
         <Button
           variant="soft"
           disabled={rollScore === ""}
-          onClick={() => {
-            setRollScore("");
-          }}
+          onClick={() => setRollScore("")}
           color="green"
         >
           Reset
@@ -31,7 +59,7 @@ export const RandomDice = () => {
           variant="soft"
           onClick={() => {
             const random = Math.random();
-            setRollScore(random > 0.5 ? "heads" : "tails");
+            showRoll(random > 0.5 ? "heads" : "tails");
           }}
           color="blue"
         >
@@ -39,54 +67,42 @@ export const RandomDice = () => {
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 4)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 4)}`)}
           color="blue"
         >
           Dice 4
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 6)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 6)}`)}
           color="blue"
         >
           Dice 6
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 8)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 8)}`)}
           color="blue"
         >
           Dice 8
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 10)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 10)}`)}
           color="blue"
         >
           Dice 10
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 12)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 12)}`)}
           color="blue"
         >
           Dice 12
         </Button>
         <Button
           variant="soft"
-          onClick={() => {
-            setRollScore(`${Math.ceil(Math.random() * 20)}`);
-          }}
+          onClick={() => showRoll(`${Math.ceil(Math.random() * 20)}`)}
           color="blue"
         >
           Dice 20
@@ -95,7 +111,3 @@ export const RandomDice = () => {
     </Container>
   );
 };
-
-const StyledSelect = styled("select")`
-  width: 100%;
-`;
