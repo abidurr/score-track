@@ -58,7 +58,9 @@ const NumberDigit: React.FC<{ digit: number; direction: Direction }> = ({
   <span
     style={{
       display: "inline-grid",
-      minWidth: "0.7em",
+      position: "relative",
+      width: "0.8em",
+      flex: "0 0 0.8em",
       verticalAlign: "baseline",
       textAlign: "center",
       fontVariantNumeric: "tabular-nums",
@@ -97,6 +99,7 @@ export const AnimatedNumber: React.FC<{ value: number }> = ({ value }) => {
       aria-label={numberFormatter.format(value)}
       style={{
         display: "inline-flex",
+        position: "relative",
         alignItems: "baseline",
         whiteSpace: "nowrap",
         fontVariantNumeric: "tabular-nums",
