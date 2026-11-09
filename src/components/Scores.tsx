@@ -13,6 +13,8 @@ import {
 import { ThickArrowDownIcon, ThickArrowUpIcon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 import { nanoid } from "nanoid";
+import { AnimatePresence, motion } from "motion/react";
+import { AnimatedNumber } from "./AnimatedNumber";
 
 export const Scores: React.FC = () => {
   const [scores, setScores] = useAtom(scoresAtom);
@@ -27,111 +29,129 @@ export const Scores: React.FC = () => {
           Scores
         </Text>
         <Flex wrap="wrap" gap={"5"} align={"start"} direction={"column"}>
-          {scores?.length ? (
-            scores?.map((item) => {
-              return (
-                <Box key={`player-${item.id}`} width="300px">
-                  <Card
-                    size="1"
-                    style={{ minWidth: "300px", width: "fit-content" }}
+          <AnimatePresence initial={false}>
+            {scores?.length ? (
+              scores?.map((item) => {
+                return (
+                  <motion.div
+                    key={`player-${item.id}`}
+                    layout
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{
+                      opacity: 0,
+                      height: 0,
+                      marginBottom: 0,
+                      overflow: "hidden",
+                    }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    style={{ width: 300 }}
                   >
-                    <Flex gap="3" align="center" justify="between">
-                      <Flex gap="3" align="center">
-                        <Avatar
-                          size="3"
-                          radius="full"
-                          fallback={item?.user_name.substring(0, 1)}
-                          color={item?.color}
-                          style={{ backgroundColor: item?.color }}
-                        />
-                        <Box>
-                          <Text as="div" size="2" weight="bold" color="gray">
-                            {item?.user_name ?? "J. Doe"}
-                          </Text>
-                          <div>
+                    <Card
+                      size="1"
+                      style={{ minWidth: "300px", width: "fit-content" }}
+                    >
+                      <Flex gap="3" align="center" justify="between">
+                        <Flex gap="3" align="center">
+                          <Avatar
+                            size="3"
+                            radius="full"
+                            fallback={item?.user_name.substring(0, 1)}
+                            color={item?.color}
+                            style={{ backgroundColor: item?.color }}
+                          />
+                          <Box>
+                            <Text as="div" size="2" weight="bold" color="gray">
+                              {item?.user_name ?? "J. Doe"}
+                            </Text>
                             <Text
                               as="div"
                               size="8"
                               weight="bold"
-                              style={{ whiteSpace: "pre-line" }}
+                              style={{ whiteSpace: "nowrap" }}
                             >
-                              {new Intl.NumberFormat().format(
-                                item?.score_value ?? 0,
-                              )}
+                              <AnimatedNumber value={item?.score_value ?? 0} />
                             </Text>
-                          </div>
+                          </Box>
+                        </Flex>
+                        <Box>
+                          <Flex gap="4" direction="column">
+                            <IconButton
+                              variant="ghost"
+                              size="2"
+                              onClick={() => {
+                                setScores(
+                                  scores?.length
+                                    ? scores.map((score) =>
+                                        item.id === score.id
+                                          ? {
+                                              ...score,
+                                              score_value:
+                                                step_size +
+                                                (score.score_value ?? 0),
+                                            }
+                                          : score,
+                                      )
+                                    : [],
+                                );
+                              }}
+                            >
+                              <ThickArrowUpIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => {
+                                setScores(
+                                  scores?.length
+                                    ? scores.map((score) =>
+                                        item.id === score.id
+                                          ? {
+                                              ...score,
+                                              score_value:
+                                                (score.score_value ?? 0) -
+                                                step_size,
+                                            }
+                                          : score,
+                                      )
+                                    : [],
+                                );
+                              }}
+                              size="2"
+                              variant="ghost"
+                            >
+                              <ThickArrowDownIcon />
+                            </IconButton>
+                          </Flex>
                         </Box>
                       </Flex>
-                      <Box>
-                        <Flex gap="4" direction="column">
-                          <IconButton
-                            variant="ghost"
-                            size="2"
-                            onClick={() => {
-                              setScores(
-                                scores?.length
-                                  ? scores.map((score) =>
-                                      item.id === score.id
-                                        ? {
-                                            ...score,
-                                            score_value:
-                                              step_size +
-                                              (score.score_value ?? 0),
-                                          }
-                                        : score,
-                                    )
-                                  : [],
-                              );
-                            }}
-                          >
-                            <ThickArrowUpIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => {
-                              setScores(
-                                scores?.length
-                                  ? scores.map((score) =>
-                                      item.id === score.id
-                                        ? {
-                                            ...score,
-                                            score_value:
-                                              (score.score_value ?? 0) -
-                                              step_size,
-                                          }
-                                        : score,
-                                    )
-                                  : [],
-                              );
-                            }}
-                            size="2"
-                            variant="ghost"
-                          >
-                            <ThickArrowDownIcon />
-                          </IconButton>
-                        </Flex>
-                      </Box>
-                    </Flex>
-                  </Card>
-                </Box>
-              );
-            })
-          ) : (
-            <Button
-              variant="soft"
-              onClick={() =>
-                setScores([
-                  {
-                    id: nanoid(),
-                    user_name: "Player 1",
-                    score_value: 0,
-                    color: "bronze",
-                  },
-                ])
-              }
-            >
-              Add Player 1
-            </Button>
-          )}
+                    </Card>
+                  </motion.div>
+                );
+              })
+            ) : (
+              <motion.div
+                key="empty-scoreboard"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Button
+                  variant="soft"
+                  onClick={() =>
+                    setScores([
+                      {
+                        id: nanoid(),
+                        user_name: "Player 1",
+                        score_value: 0,
+                        color: "bronze",
+                      },
+                    ])
+                  }
+                >
+                  Add Player 1
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </Flex>
       </Flex>
     </Section>
